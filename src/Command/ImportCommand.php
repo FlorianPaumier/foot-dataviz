@@ -226,6 +226,8 @@ class ImportCommand extends ContainerAwareCommand
                 $output->writeln("Add Writer");
                 $writers = explode(",", $content->Writer);
                 foreach ($writers as $writerName){
+                    $writerName = trim(explode("(", $writerName)[0]);
+
                     $writer = $this->em->getRepository(Writer::class)->findByName($writerName);
 
                     if(is_null($writer)){
@@ -245,7 +247,6 @@ class ImportCommand extends ContainerAwareCommand
 
                 $this->em->persist($movie);
             }
-
 
             $output->writeln("========================\n\r");
 
