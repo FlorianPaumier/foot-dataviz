@@ -2,6 +2,6 @@ api_login_check:
     path: /api/login
 
 api:
-    resource: ../../src/Controller/Api
+    resource: ../../src/Controller
     type: annotation
     prefix: /api

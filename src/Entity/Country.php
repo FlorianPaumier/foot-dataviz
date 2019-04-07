@@ -19,29 +19,18 @@ class Country
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="string", length=100)
      */
     private $name;
 
     /**
-     * @ORM\Column(type="string", length=10, nullable=true)
+     * @ORM\OneToMany(targetEntity="App\Entity\Club", mappedBy="country")
      */
-    private $iso;
-
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Company", mappedBy="originCountry")
-     */
-    private $companies;
-
-    /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Movie", mappedBy="productionCountries")
-     */
-    private $movies;
+    private $clubs;
 
     public function __construct()
     {
-        $this->companies = new ArrayCollection();
-        $this->movies = new ArrayCollection();
+        $this->clubs = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -54,79 +43,39 @@ class Country
         return $this->name;
     }
 
-    public function setName(?string $name): self
+    public function setName(string $name): self
     {
         $this->name = $name;
 
         return $this;
     }
 
-    public function getIso(): ?string
-    {
-        return $this->iso;
-    }
-
-    public function setIso(?string $iso): self
-    {
-        $this->iso = $iso;
-
-        return $this;
-    }
-
     /**
-     * @return Collection|Company[]
+     * @return Collection|Club[]
      */
-    public function getCompanies(): Collection
+    public function getClubs(): Collection
     {
-        return $this->companies;
+        return $this->clubs;
     }
 
-    public function addCompany(Company $company): self
+    public function addClub(Club $club): self
     {
-        if (!$this->companies->contains($company)) {
-            $this->companies[] = $company;
-            $company->setOriginCountry($this);
+        if (!$this->clubs->contains($club)) {
+            $this->clubs[] = $club;
+            $club->setCountry($this);
         }
 
         return $this;
     }
 
-    public function removeCompany(Company $company): self
+    public function removeClub(Club $club): self
     {
-        if ($this->companies->contains($company)) {
-            $this->companies->removeElement($company);
+        if ($this->clubs->contains($club)) {
+            $this->clubs->removeElement($club);
             // set the owning side to null (unless already changed)
-            if ($company->getOriginCountry() === $this) {
-                $company->setOriginCountry(null);
+            if ($club->getCountry() === $this) {
+                $club->setCountry(null);
             }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Movie[]
-     */
-    public function getMovies(): Collection
-    {
-        return $this->movies;
-    }
-
-    public function addMovie(Movie $movie): self
-    {
-        if (!$this->movies->contains($movie)) {
-            $this->movies[] = $movie;
-            $movie->addProductionCountry($this);
-        }
-
-        return $this;
-    }
-
-    public function removeMovie(Movie $movie): self
-    {
-        if ($this->movies->contains($movie)) {
-            $this->movies->removeElement($movie);
-            $movie->removeProductionCountry($this);
         }
 
         return $this;
