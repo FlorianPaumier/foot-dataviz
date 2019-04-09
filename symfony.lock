@@ -300,6 +300,9 @@
             "ref": "6c1ceb662f8997085f739cd089bfbef67f245983"
         }
     },
+    "swagger-api/swagger-ui": {
+        "version": "v3.22.0"
+    },
     "swiftmailer/swiftmailer": {
         "version": "v6.2.0"
     },

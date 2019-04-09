@@ -9,6 +9,21 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Kernel as BaseKernel;
 use Symfony\Component\Routing\RouteCollectionBuilder;
 
+// Some swagger documentation
+define('DESCRIPTION_GET', 'Retrieves a resource.');
+define('DESCRIPTION_GET_ALL', 'Retrieves a collection of resources.');
+define('DESCRIPTION_POST', 'Creates a resource.');
+define('DESCRIPTION_PUT', 'Replaces the resource.');
+define('DESCRIPTION_DELETE', 'Removes the resource.');
+
+define('DESCRIPTION_RESPONSE_200', 'Operation successful');
+define('DESCRIPTION_RESPONSE_201', 'Resource created successfully');
+define('DESCRIPTION_RESPONSE_204', 'No content');
+define('DESCRIPTION_RESPONSE_400', 'Bad request');
+define('DESCRIPTION_RESPONSE_401', 'Unauthorized');
+define('DESCRIPTION_RESPONSE_403', 'Access denied');
+define('DESCRIPTION_RESPONSE_404', 'Resource not found');
+
 class Kernel extends BaseKernel
 {
     use MicroKernelTrait;

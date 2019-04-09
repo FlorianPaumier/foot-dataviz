@@ -2,25 +2,25 @@
 
 namespace App\Repository;
 
-use App\Entity\Match;
+use App\Entity\Game;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
- * @method Match|null find($id, $lockMode = null, $lockVersion = null)
- * @method Match|null findOneBy(array $criteria, array $orderBy = null)
- * @method Match[]    findAll()
- * @method Match[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method Game|null find($id, $lockMode = null, $lockVersion = null)
+ * @method Game|null findOneBy(array $criteria, array $orderBy = null)
+ * @method Game[]    findAll()
+ * @method Game[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
 class MatchRepository extends ServiceEntityRepository
 {
     public function __construct(RegistryInterface $registry)
     {
-        parent::__construct($registry, Match::class);
+        parent::__construct($registry, Game::class);
     }
 
     // /**
-    //  * @return Match[] Returns an array of Match objects
+    //  * @return Game[] Returns an array of Game objects
     //  */
     /*
     public function findByExampleField($value)
@@ -37,7 +37,7 @@ class MatchRepository extends ServiceEntityRepository
     */
 
     /*
-    public function findOneBySomeField($value): ?Match
+    public function findOneBySomeField($value): ?Game
     {
         return $this->createQueryBuilder('m')
             ->andWhere('m.exampleField = :val')

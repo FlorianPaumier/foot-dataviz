@@ -3,13 +3,17 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use OpenApi\Annotations as OA;
+use Symfony\Component\DependencyInjection\Tests\Compiler\G;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\MatchInformationRepository")
+ * @OA\Schema()
  */
 class MatchInformation
 {
     /**
+     * @var integer
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
@@ -17,17 +21,20 @@ class MatchInformation
     private $id;
 
     /**
+     * @var string
      * @ORM\Column(type="string")
      */
     private $score;
 
     /**
+     * @var MatchParameters
      * @ORM\ManyToOne(targetEntity="App\Entity\MatchParameters")
      */
     private $parameter;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Match", inversedBy="informations")
+     * @var Game
+     * @ORM\ManyToOne(targetEntity="App\Entity\Game", inversedBy="informations")
      * @ORM\JoinColumn(nullable=false)
      */
     private $game;
@@ -37,12 +44,12 @@ class MatchInformation
         return $this->id;
     }
 
-    public function getScore(): ?int
+    public function getScore(): ?string
     {
         return $this->score;
     }
 
-    public function setScore(int $score): self
+    public function setScore(string $score): self
     {
         $this->score = $score;
 
@@ -61,12 +68,12 @@ class MatchInformation
         return $this;
     }
 
-    public function getGame(): ?Match
+    public function getGame(): ?Game
     {
         return $this->game;
     }
 
-    public function setGame(?Match $game): self
+    public function setGame(?Game $game): self
     {
         $this->game = $game;
 

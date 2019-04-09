@@ -3,16 +3,13 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use OpenApi\Annotations as OA;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\MatchParametersRepository")
- * @OA\Schema()
+ * @ORM\Entity(repositoryClass="App\Repository\AttributRepository")
  */
-class MatchParameters
+class Attribut
 {
     /**
-     * @var integer
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
@@ -20,14 +17,12 @@ class MatchParameters
     private $id;
 
     /**
-     * @var string
-     * @ORM\Column(type="string", length=50)
+     * @ORM\Column(type="string", length=255)
      */
-    private $name;
+    private $libelle;
 
     /**
-     * @var string
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="string", length=255)
      */
     private $description;
 
@@ -36,14 +31,14 @@ class MatchParameters
         return $this->id;
     }
 
-    public function getName(): ?string
+    public function getLibelle(): ?string
     {
-        return $this->name;
+        return $this->libelle;
     }
 
-    public function setName(string $name): self
+    public function setLibelle(string $libelle): self
     {
-        $this->name = $name;
+        $this->libelle = $libelle;
 
         return $this;
     }
@@ -53,7 +48,7 @@ class MatchParameters
         return $this->description;
     }
 
-    public function setDescription(?string $description): self
+    public function setDescription(string $description): self
     {
         $this->description = $description;
 

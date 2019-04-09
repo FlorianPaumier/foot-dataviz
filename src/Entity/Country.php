@@ -5,13 +5,16 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use OpenApi\Annotations as OA;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\CountryRepository")
+ * @OA\Schema()
  */
 class Country
 {
     /**
+     * @var integer
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
@@ -19,11 +22,13 @@ class Country
     private $id;
 
     /**
+     * @var string
      * @ORM\Column(type="string", length=100)
      */
     private $name;
 
     /**
+     * @var Collection|Club[]
      * @ORM\OneToMany(targetEntity="App\Entity\Club", mappedBy="country")
      */
     private $clubs;

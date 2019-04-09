@@ -5,13 +5,16 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use OpenApi\Annotations as OA;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\MatchRepository")
+ * @OA\Schema()
  */
-class Match
+class Game
 {
     /**
+     * @var integer
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
@@ -19,26 +22,36 @@ class Match
     private $id;
 
     /**
+     * @var \DateTime
      * @ORM\Column(type="datetime")
      */
     private $playingDate;
 
     /**
+     * @var Club
      * @ORM\ManyToOne(targetEntity="App\Entity\Club", inversedBy="matches")
      * @ORM\JoinColumn(nullable=false)
      */
     private $homeTeam;
 
     /**
+     * @var Club
      * @ORM\ManyToOne(targetEntity="App\Entity\Club", inversedBy="awayMatches")
      * @ORM\JoinColumn(nullable=false)
      */
     private $awayTeam;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\MatchInformation", mappedBy="game", orphanRemoval=true)
+     * @var Collection|MatchInformation[]
+     * @ORM\OneToMany(targetEntity="App\Entity\MatchInformation", mappedBy="game", orphanRemoval=true, cascade={"persist", "remove"})
      */
     private $informations;
+
+    /**
+     * @var League
+     * @ORM\ManyToOne(targetEntity="App\Entity\League", inversedBy="games")
+     */
+    private $league;
 
     public function __construct()
     {
@@ -50,12 +63,12 @@ class Match
         return $this->id;
     }
 
-    public function getPlayingDate(): ?\DateTimeInterface
+    public function getPlayingDate(): ?\DateTime
     {
         return $this->playingDate;
     }
 
-    public function setPlayingDate(\DateTimeInterface $playingDate): self
+    public function setPlayingDate(\DateTime $playingDate): self
     {
         $this->playingDate = $playingDate;
 
@@ -113,6 +126,18 @@ class Match
                 $information->setGame(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getLeague(): ?League
+    {
+        return $this->league;
+    }
+
+    public function setLeague(?League $league): self
+    {
+        $this->league = $league;
 
         return $this;
     }
