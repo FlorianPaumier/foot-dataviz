@@ -39,9 +39,20 @@ class Player
      */
     private $playerClubs;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\PlayerInformation", mappedBy="player")
+     */
+    private $information;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Country", inversedBy="players")
+     */
+    private $country;
+
     public function __construct()
     {
         $this->playerClubs = new ArrayCollection();
+        $this->information = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -101,6 +112,49 @@ class Player
                 $playerClub->setPlayer(null);
             }
         }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|PlayerInformation[]
+     */
+    public function getInformation(): Collection
+    {
+        return $this->information;
+    }
+
+    public function addInformation(PlayerInformation $information): self
+    {
+        if (!$this->information->contains($information)) {
+            $this->information[] = $information;
+            $information->setPlayer($this);
+        }
+
+        return $this;
+    }
+
+    public function removeInformation(PlayerInformation $information): self
+    {
+        if ($this->information->contains($information)) {
+            $this->information->removeElement($information);
+            // set the owning side to null (unless already changed)
+            if ($information->getPlayer() === $this) {
+                $information->setPlayer(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getCountry(): ?Country
+    {
+        return $this->country;
+    }
+
+    public function setCountry(?Country $country): self
+    {
+        $this->country = $country;
 
         return $this;
     }

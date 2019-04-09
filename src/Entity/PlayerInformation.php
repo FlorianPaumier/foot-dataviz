@@ -45,6 +45,26 @@ class PlayerInformation
      */
     private $attributs;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Player", inversedBy="information")
+     */
+    private $player;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $position;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $age;
+
+    /**
+     * @ORM\Column(type="string", length=10)
+     */
+    private $weight;
+
     public function __construct()
     {
         $this->attributs = new ArrayCollection();
@@ -118,6 +138,54 @@ class PlayerInformation
                 $attribut->setPlayerInformation(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getPlayer(): ?Player
+    {
+        return $this->player;
+    }
+
+    public function setPlayer(?Player $player): self
+    {
+        $this->player = $player;
+
+        return $this;
+    }
+
+    public function getPosition(): ?string
+    {
+        return $this->position;
+    }
+
+    public function setPosition(string $position): self
+    {
+        $this->position = $position;
+
+        return $this;
+    }
+
+    public function getAge(): ?int
+    {
+        return $this->age;
+    }
+
+    public function setAge(int $age): self
+    {
+        $this->age = $age;
+
+        return $this;
+    }
+
+    public function getWeight(): ?string
+    {
+        return $this->weight;
+    }
+
+    public function setWeight(string $weight): self
+    {
+        $this->weight = $weight;
 
         return $this;
     }
