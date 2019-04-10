@@ -5,11 +5,13 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation as JMS;
 use OpenApi\Annotations as OA;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\PlayerInformationRepository")
  * @OA\Schema()
+ * @JMS\ExclusionPolicy("all")
  */
 class PlayerInformation
 {
@@ -18,30 +20,40 @@ class PlayerInformation
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @JMS\Expose()
+     * @JMS\Groups({"information", "information_light", "information_id"})
      */
     private $id;
 
     /**
      * @var integer
      * @ORM\Column(type="integer")
+     * @JMS\Expose()
+     * @JMS\Groups({"information", "information_light"})
      */
     private $salary;
 
     /**
      * @var string
      * @ORM\Column(type="string", length=255)
+     * @JMS\Expose()
+     * @JMS\Groups({"information", "information_light"})
      */
     private $value;
 
     /**
      * @var \DateTime
      * @ORM\Column(type="datetime")
+     * @JMS\Expose()
+     * @JMS\Groups({"information", "information_light"})
      */
     private $effectiveDate;
 
     /**
      * @var Collection|Attribut[]
      * @ORM\OneToMany(targetEntity="App\Entity\PlayerAttribut", mappedBy="playerInformation")
+     * @JMS\Expose()
+     * @JMS\Groups({"information", "information_light"})
      */
     private $attributs;
 
@@ -52,16 +64,22 @@ class PlayerInformation
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @JMS\Expose()
+     * @JMS\Groups({"information", "information_light"})
      */
     private $position;
 
     /**
      * @ORM\Column(type="integer")
+     * @JMS\Expose()
+     * @JMS\Groups({"information", "information_light"})
      */
     private $age;
 
     /**
      * @ORM\Column(type="string", length=10)
+     * @JMS\Expose()
+     * @JMS\Groups({"information", "information_light"})
      */
     private $weight;
 

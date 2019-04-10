@@ -21,7 +21,7 @@ class PlayerController extends ApiController
 {
     /**
      * @Rest\Get
-     * @Rest\View(serializerGroups={"pagination"}, statusCode=Response::HTTP_OK)
+     * @Rest\View(serializerGroups={"player_light","club_light","country_light", "pagination"}, statusCode=Response::HTTP_OK)
      * @Rest\QueryParam(name="sort", default="id", requirements="name|id")
      * @Rest\QueryParam(name="direction", default="asc", requirements="asc|desc")
      * @Rest\QueryParam(name="page", default=1, requirements="\d+")
@@ -46,7 +46,7 @@ class PlayerController extends ApiController
 
     /**
      * @Rest\Get("/{id}")
-     * @Rest\View(serializerGroups={"pagination"}, statusCode=Response::HTTP_OK)
+     * @Rest\View(serializerGroups={"player","country_light","attribut","player_attribut","information","pagination"}, statusCode=Response::HTTP_OK)
      * @OA\Get(
      *     path="/player/{id}",
      *     tags={"Player"},

@@ -3,11 +3,13 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation as JMS;
 use OpenApi\Annotations as OA;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\PlayerAttributRepository")
  * @OA\Schema()
+ * @JMS\ExclusionPolicy("all")
  */
 class PlayerAttribut
 {
@@ -16,18 +18,24 @@ class PlayerAttribut
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @JMS\Expose()
+     * @JMS\Groups({"player_attribut"})
      */
     private $id;
 
     /**
      * @var integer
      * @ORM\Column(type="integer")
+     * @JMS\Expose()
+     * @JMS\Groups({"player_attribut"})
      */
     private $score;
 
     /**
      * @var Attribut
      * @ORM\ManyToOne(targetEntity="App\Entity\Attribut")
+     * @JMS\Expose()
+     * @JMS\Groups({"player_attribut"})
      */
     private $attributs;
 

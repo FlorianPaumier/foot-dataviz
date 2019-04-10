@@ -3,9 +3,13 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation as JMS;
+use OpenApi\Annotations as OA;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\AttributRepository")
+ * @OA\Schema()
+ * @JMS\ExclusionPolicy("all")
  */
 class Attribut
 {
@@ -18,16 +22,22 @@ class Attribut
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @JMS\Expose()
+     * @JMS\Groups({"attribut"})
      */
     private $libelle;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @JMS\Expose()
+     * @JMS\Groups({"attribut"})
      */
     private $description;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @JMS\Expose()
+     * @JMS\Groups({"attribut"})
      */
     private $type;
 

@@ -5,11 +5,13 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation as JMS;
 use OpenApi\Annotations as OA;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\CountryRepository")
  * @OA\Schema()
+ * @JMS\ExclusionPolicy("all")
  */
 class Country
 {
@@ -18,28 +20,39 @@ class Country
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @JMS\Expose()
+     * @JMS\Groups({"country", "country_light", "country_id"})
+     *
      */
     private $id;
 
     /**
      * @var string
      * @ORM\Column(type="string", length=100)
+     * @JMS\Expose()
+     * @JMS\Groups({"country", "country_light"})
      */
     private $name;
 
     /**
      * @var Collection|Club[]
      * @ORM\OneToMany(targetEntity="App\Entity\Club", mappedBy="country")
+     * @JMS\Expose()
+     * @JMS\Groups({"country"})
      */
     private $clubs;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @JMS\Expose()
+     * @JMS\Groups({"country", "country_light"})
      */
     private $flag;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Player", mappedBy="country")
+     * @JMS\Expose()
+     * @JMS\Groups({"country"})
      */
     private $players;
 

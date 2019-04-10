@@ -5,11 +5,13 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation as JMS;
 use OpenApi\Annotations as OA;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\PlayerRepository")
  * @OA\Schema()
+ * @JMS\ExclusionPolicy("all")
  */
 class Player
 {
@@ -18,34 +20,46 @@ class Player
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @JMS\Expose()
+     * @JMS\Groups({"player", "player_light", "player_id"})
      */
     private $id;
 
     /**
      * @var string
      * @ORM\Column(type="string", length=255)
+     * @JMS\Expose()
+     * @JMS\Groups({"player", "player_light"})
      */
     private $name;
 
     /**
      * @var string
      * @ORM\Column(type="string", length=255)
+     * @JMS\Expose()
+     * @JMS\Groups({"player", "player_light"})
      */
     private $pictureLink;
 
     /**
      * @var Collection|PlayerClub[]
      * @ORM\OneToMany(targetEntity="App\Entity\PlayerClub", mappedBy="player")
+     * @JMS\Expose()
+     * @JMS\Groups({"player"})
      */
     private $playerClubs;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\PlayerInformation", mappedBy="player")
+     * @JMS\Expose()
+     * @JMS\Groups({"player"})
      */
     private $information;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Country", inversedBy="players")
+     * @JMS\Expose()
+     * @JMS\Groups({"player", "player_light"})
      */
     private $country;
 

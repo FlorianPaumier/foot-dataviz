@@ -33,7 +33,7 @@ class DefaultController extends AbstractController
     ];
 
     /**
-     * @Rest\Get("/")
+     * @Rest\Get("/import-data/sofifa")
      */
     public function scrap()
     {
@@ -175,54 +175,61 @@ class DefaultController extends AbstractController
 
                                 break;
                             case 5:
-                                $flagClub = $col->getElementsByTagName("img")[0]->getAttribute("src");
-                                $clubName = $col->getElementsByTagName("a")[0]->firstChild->data;
-
-                                $club = $em->getRepository(Club::class)->findOneBy([
-                                    "name" => trim($clubName)
-                                ]);
-
-                                if (is_null($club)) {
-                                    $club = new Club();
-                                    $club->setFlag($flagClub);
-                                    $club->setName($clubName);
-                                }
+                                $flagClub = $col->getElementsByTagName("img")[0]->getAttribute("data-src");
 
                                 $dateString = $col->getElementsByTagName('div')[1]->firstChild->data;
 
-                                if (strpos($dateString, "(")) {
+                                if(!strpos($dateString, "Free")){
+                                    $clubName = $col->getElementsByTagName("a")[0]->firstChild->data;
 
-                                    $dates = explode("(", $dateString);
+                                    $club = $em->getRepository(Club::class)->findOneBy([
+                                        "name" => trim($clubName)
+                                    ]);
 
-                                    $startDate = new \DateTime($dates[0]);
-                                    $endDate = new \DateTime($dates[0]);
 
-                                } else {
-                                    $dates = explode(" ~ ", $dateString);
+                                    if (is_null($club)) {
+                                        $club = new Club();
+                                        $club->setName($clubName);
+                                    }
 
-                                    $startDate = new \DateTime($dates[0] . "01-01");
-                                    $endDate = new \DateTime($dates[1] . "01-01");
+
+                                    $club->setFlag($flagClub);
+
+                                    if (strpos($dateString, "(")) {
+
+                                        $dates = explode("(", $dateString);
+
+                                        $startDate = new \DateTime($dates[0]);
+                                        $endDate = new \DateTime($dates[0]);
+
+                                    } else {
+                                        $dates = explode(" ~ ", $dateString);
+
+                                        $startDate = new \DateTime($dates[0] . "01-01");
+                                        $endDate = new \DateTime($dates[1] . "01-01");
+                                    }
+
+                                    $playerClub = $em->getRepository(PlayerClub::class)->findOneBy([
+                                        "club" => $club,
+                                        "endedDate" => $endDate,
+                                        "staredDate" => $startDate,
+                                        "player" => $player,
+                                    ]);
+
+                                    if (is_null($playerClub)) {
+                                        $playerClub = new PlayerClub();
+                                        $playerClub->setClub($club);
+                                        $playerClub->setEndedDate($endDate);
+                                        $playerClub->setStaredDate($startDate);
+                                        $playerClub->setPlayer($player);
+
+                                        $player->addPlayerClub($playerClub);
+                                    }
+
+                                    $em->persist($playerClub);
+                                    $em->persist($club);
                                 }
 
-                                $playerClub = $em->getRepository(PlayerClub::class)->findOneBy([
-                                    "club" => $club,
-                                    "endedDate" => $endDate,
-                                    "staredDate" => $startDate,
-                                    "player" => $player,
-                                ]);
-
-                                if (is_null($playerClub)) {
-                                    $playerClub = new PlayerClub();
-                                    $playerClub->setClub($club);
-                                    $playerClub->setEndedDate($endDate);
-                                    $playerClub->setStaredDate($startDate);
-                                    $playerClub->setPlayer($player);
-
-                                    $player->addPlayerClub($playerClub);
-                                }
-
-                                $em->persist($playerClub);
-                                $em->persist($club);
 
                                 break;
                             case 6:
