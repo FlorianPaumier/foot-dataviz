@@ -52,9 +52,16 @@ class ImportCommand extends ContainerAwareCommand
         foreach ($dirs as $dir) {
             if (!in_array($dir, ['.', '..', ".DS_Store"])) {
                 $files = scandir($this->path . '/' . $dir);
-                $league = (new League())->setName($dir);
 
-                $this->em->persist($league);
+                $league = $this->em->getRepository(League::class)->findOneBy([
+                    "name" => trim($dir)
+                ]);
+
+                if(is_null($league)){
+                    $league = (new League())->setName($dir);
+                    $this->em->persist($league);
+                }
+
 
                 foreach ($files as $file) {
                     if (!in_array($file, ['.', '..', ".DS_Store"])) {
