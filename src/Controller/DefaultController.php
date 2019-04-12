@@ -420,6 +420,7 @@ class DefaultController extends AbstractController
                     if($key % 100){
                         flush();
                         ob_clean();
+$em->clear();
                     }
                 };
 
