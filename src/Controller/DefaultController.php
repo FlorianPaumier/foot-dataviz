@@ -19,6 +19,7 @@ use FOS\RestBundle\Controller\Annotations as Rest;
 use Goutte\Client;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class DefaultController extends AbstractController
 {
@@ -34,20 +35,17 @@ class DefaultController extends AbstractController
 
     /**
      * @Rest\Get("/import-data/sofifa")
+     * @throws \Exception
      */
     public function scrap()
     {
-        /*$baseUrl = [
+        $baseUrl = [
             "https://sofifa.com/players?v=19&e=159422&wil=110&wih=269&crl=0&fil=0&hel=0&shl=0&vol=0&drl=0&drh=99&cul=0&cuh=99&frl=0&frh=99&lol=0&loh=99&bll=0&blh=99&acl=0&ach=99&spl=0&sph=99&agl=0&agh=99&rel=0&reh=99&bal=0&bah=99&sol=0&soh=99&jul=0&juh=99&stl=0&sth=99&srl=0&srh=99&lnl=0&lnh=99&arl=0&arh=99&inl=0&inh=99&pol=0&poh=99&vil=0&vih=99&pel=0&peh=99&cml=0&cmh=99&mal=0&mah=99&sal=0&sah=99&sll=0&slh=99&gdl=0&gdh=99&ghl=0&ghh=99&gkl=0&gkh=99&gpl=0&gph=99&grl=0&grh=99&showCol=bp",
             "https://sofifa.com/players?v=18&e=159214&wil=110&wih=269&crl=0&fil=0&hel=0&shl=0&vol=0&drl=0&drh=99&cul=0&cuh=99&frl=0&frh=99&lol=0&loh=99&bll=0&blh=99&acl=0&ach=99&spl=0&sph=99&agl=0&agh=99&rel=0&reh=99&bal=0&bah=99&sol=0&soh=99&jul=0&juh=99&stl=0&sth=99&srl=0&srh=99&lnl=0&lnh=99&arl=0&arh=99&inl=0&inh=99&pol=0&poh=99&vil=0&vih=99&pel=0&peh=99&cml=0&cmh=99&mal=0&mah=99&sal=0&sah=99&sll=0&slh=99&gdl=0&gdh=99&ghl=0&ghh=99&gkl=0&gkh=99&gpl=0&gph=99&grl=0&grh=99&showCol=bp",
             "https://sofifa.com/players?v=17&e=158857&wil=110&wih=269&crl=0&fil=0&hel=0&shl=0&vol=0&drl=0&drh=99&cul=0&cuh=99&frl=0&frh=99&lol=0&loh=99&bll=0&blh=99&acl=0&ach=99&spl=0&sph=99&agl=0&agh=99&rel=0&reh=99&bal=0&bah=99&sol=0&soh=99&jul=0&juh=99&stl=0&sth=99&srl=0&srh=99&lnl=0&lnh=99&arl=0&arh=99&inl=0&inh=99&pol=0&poh=99&vil=0&vih=99&pel=0&peh=99&cml=0&cmh=99&mal=0&mah=99&sal=0&sah=99&sll=0&slh=99&gdl=0&gdh=99&ghl=0&ghh=99&gkl=0&gkh=99&gpl=0&gph=99&grl=0&grh=99&showCol=bp",
             "https://sofifa.com/players?v=16&e=158494&wil=110&wih=269&crl=0&fil=0&hel=0&shl=0&vol=0&drl=0&drh=99&cul=0&cuh=99&frl=0&frh=99&lol=0&loh=99&bll=0&blh=99&acl=0&ach=99&spl=0&sph=99&agl=0&agh=99&rel=0&reh=99&bal=0&bah=99&sol=0&soh=99&jul=0&juh=99&stl=0&sth=99&srl=0&srh=99&lnl=0&lnh=99&arl=0&arh=99&inl=0&inh=99&pol=0&poh=99&vil=0&vih=99&pel=0&peh=99&cml=0&cmh=99&mal=0&mah=99&sal=0&sah=99&sll=0&slh=99&gdl=0&gdh=99&ghl=0&ghh=99&gkl=0&gkh=99&gpl=0&gph=99&grl=0&grh=99&showCol=bp",
             "https://sofifa.com/players?v=15&e=158116&wil=110&wih=269&crl=0&fil=0&hel=0&shl=0&vol=0&drl=0&drh=99&cul=0&cuh=99&frl=0&frh=99&lol=0&loh=99&bll=0&blh=99&acl=0&ach=99&spl=0&sph=99&agl=0&agh=99&rel=0&reh=99&bal=0&bah=99&sol=0&soh=99&jul=0&juh=99&stl=0&sth=99&srl=0&srh=99&lnl=0&lnh=99&arl=0&arh=99&inl=0&inh=99&pol=0&poh=99&vil=0&vih=99&pel=0&peh=99&cml=0&cmh=99&mal=0&mah=99&sal=0&sah=99&sll=0&slh=99&gdl=0&gdh=99&ghl=0&ghh=99&gkl=0&gkh=99&gpl=0&gph=99&grl=0&grh=99&showCol=bp",
             "https://sofifa.com/players?v=14&e=157760&wil=110&wih=269&crl=0&fil=0&hel=0&shl=0&vol=0&drl=0&drh=99&cul=0&cuh=99&frl=0&frh=99&lol=0&loh=99&bll=0&blh=99&acl=0&ach=99&spl=0&sph=99&agl=0&agh=99&rel=0&reh=99&bal=0&bah=99&sol=0&soh=99&jul=0&juh=99&stl=0&sth=99&srl=0&srh=99&lnl=0&lnh=99&arl=0&arh=99&inl=0&inh=99&pol=0&poh=99&vil=0&vih=99&pel=0&peh=99&cml=0&cmh=99&mal=0&mah=99&sal=0&sah=99&sll=0&slh=99&gdl=0&gdh=99&ghl=0&ghh=99&gkl=0&gkh=99&gpl=0&gph=99&grl=0&grh=99&showCol=bp",
-        ];*/
-
-        $baseUrl = [
-            "https://sofifa.com/players?v=19&e=159422&wil=110&wih=269&crl=0&fil=0&hel=0&shl=0&vol=0&drl=0&drh=99&cul=0&cuh=99&frl=0&frh=99&lol=0&loh=99&bll=0&blh=99&acl=0&ach=99&spl=0&sph=99&agl=0&agh=99&rel=0&reh=99&bal=0&bah=99&sol=0&soh=99&jul=0&juh=99&stl=0&sth=99&srl=0&srh=99&lnl=0&lnh=99&arl=0&arh=99&inl=0&inh=99&pol=0&poh=99&vil=0&vih=99&pel=0&peh=99&cml=0&cmh=99&mal=0&mah=99&sal=0&sah=99&sll=0&slh=99&gdl=0&gdh=99&ghl=0&ghh=99&gkl=0&gkh=99&gpl=0&gph=99&grl=0&grh=99&showCol=bp",
         ];
 
 
@@ -66,11 +64,12 @@ class DefaultController extends AbstractController
                 foreach ($rows as $key => $row) {
 
                     $player = new Player();
+
+                    $isNewPlayerInformation = false;
+
                     $playerData = new PlayerInformation();
 
-                    $player->addInformation($playerData);
-                    $playerData->setEffectiveDate(new \DateTime(self::$effectivDate[$index]));
-
+                    $effectivDate = new \DateTime(self::$effectivDate[$index]);
 
                     $cols = $row->getElementsByTagName("td");
 
@@ -109,22 +108,42 @@ class DefaultController extends AbstractController
 
                                 if (!is_null($playerbdd)) {
                                     $player = $playerbdd;
-                                    $player->addInformation($playerData);
+
+                                    $playerData = $em->getRepository(PlayerInformation::class)->findOneBy([
+                                        "player" => $playerbdd,
+                                        "effectiveDate" => $effectivDate,
+                                    ]);
+
+                                    if (is_null($playerData)) {
+
+                                        $playerData = new PlayerInformation();
+
+                                        $isNewPlayerInformation = true;
+                                        $playerData->setEffectiveDate($effectivDate);
+                                        $playerData->setPlayer($player);
+                                    }
+
                                 } else {
+
+                                    $playerData = new PlayerInformation();
+
                                     $player->setName($playerName);
                                     $player->setCountry($country);
-                                }
-                                if ($boucle == 1) {
-                                    dump($player);
-                                    die();
+
+                                    $isNewPlayerInformation = true;
+                                    $playerData->setEffectiveDate($effectivDate);
+                                    $playerData->setPlayer($player);
                                 }
 
                                 break;
                             case 2:
-                                $age = $col->getElementsByTagName('div')[0]->firstChild->data;
-                                $playerData->setAge(intval($age));
+                                if ($isNewPlayerInformation) {
+                                    $age = $col->getElementsByTagName('div')[0]->firstChild->data;
+                                    $playerData->setAge(intval($age));
+                                }
                                 break;
                             case 3:
+
                                 $ova = $col->getElementsByTagName("span")[0]->firstChild->data;
 
                                 $attribut = $em->getRepository(Attribut::class)->findOneBy([
@@ -140,13 +159,22 @@ class DefaultController extends AbstractController
                                     $em->persist($attribut);
                                 }
 
-                                $playerAttr = new PlayerAttribut();
-                                $playerAttr->setScore(trim($ova));
-                                $playerAttr->setAttributs($attribut);
+                                $playerAttr = $em->getRepository(PlayerAttribut::class)->findOneBy([
+                                    "score" => trim($ova),
+                                    "attributs" => $attribut,
+                                    "playerInformation" => $playerData,
+                                ]);
 
-                                $playerData->addAttribut($playerAttr);
+                                if (is_null($playerAttr)) {
 
-                                $em->persist($playerAttr);
+                                    $playerAttr = new PlayerAttribut();
+                                    $playerAttr->setScore(trim($ova));
+                                    $playerAttr->setAttributs($attribut);
+
+                                    $playerData->addAttribut($playerAttr);
+
+                                    $em->persist($playerAttr);
+                                }
 
                                 break;
                             case 4:
@@ -165,13 +193,23 @@ class DefaultController extends AbstractController
                                     $em->persist($attribut);
                                 }
 
-                                $playerAttr = new PlayerAttribut();
-                                $playerAttr->setScore(trim($pot));
-                                $playerAttr->setAttributs($attribut);
+                                $playerAttr = $em->getRepository(PlayerAttribut::class)->findOneBy([
+                                    "score" => trim($pot),
+                                    "attributs" => $attribut,
+                                    "playerInformation" => $playerData,
+                                ]);
 
-                                $playerData->addAttribut($playerAttr);
+                                if (is_null($playerAttr)) {
 
-                                $em->persist($playerAttr);
+                                    $playerAttr = new PlayerAttribut();
+                                    $playerAttr->setScore(trim($pot));
+                                    $playerAttr->setAttributs($attribut);
+
+                                    $playerData->addAttribut($playerAttr);
+
+                                    $em->persist($playerAttr);
+                                }
+
 
                                 break;
                             case 5:
@@ -179,7 +217,8 @@ class DefaultController extends AbstractController
 
                                 $dateString = $col->getElementsByTagName('div')[1]->firstChild->data;
 
-                                if(!strpos($dateString, "Free")){
+                                if (strpos($dateString, "Free") !== 0) {
+
                                     $clubName = $col->getElementsByTagName("a")[0]->firstChild->data;
 
                                     $club = $em->getRepository(Club::class)->findOneBy([
@@ -205,8 +244,8 @@ class DefaultController extends AbstractController
                                     } else {
                                         $dates = explode(" ~ ", $dateString);
 
-                                        $startDate = new \DateTime($dates[0] . "01-01");
-                                        $endDate = new \DateTime($dates[1] . "01-01");
+                                        $startDate = new \DateTime($dates[0] . "-01-01");
+                                        $endDate = new \DateTime($dates[1] . "-01-01");
                                     }
 
                                     $playerClub = $em->getRepository(PlayerClub::class)->findOneBy([
@@ -233,12 +272,17 @@ class DefaultController extends AbstractController
 
                                 break;
                             case 6:
-                                $weight = $col->getElementsByTagName('div')[0]->firstChild->data;
-                                $playerData->setWeight($weight);
+                                if ($isNewPlayerInformation) {
+                                    $weight = $col->getElementsByTagName('div')[0]->firstChild->data;
+                                    $playerData->setWeight($weight);
+                                }
                                 break;
                             case 7:
-                                $pos = $col->getElementsByTagName('span')[0]->firstChild->data;;
-                                $playerData->setPosition($pos);
+
+                                if ($isNewPlayerInformation) {
+                                    $pos = $col->getElementsByTagName('span')[0]->firstChild->data;;
+                                    $playerData->setPosition($pos);
+                                }
                                 break;
                             case 8:
                                 $val = $col->getElementsByTagName('div')[0]->firstChild->data;
@@ -253,7 +297,10 @@ class DefaultController extends AbstractController
                                 }
 
                                 $val = intval(str_replace(["€", "M"], "", $val)) * $indice;
-                                $playerData->setValue($val);
+
+                                if ($isNewPlayerInformation) {
+                                    $playerData->setValue($val);
+                                }
                                 break;
                             case 9:
                                 $val = $col->getElementsByTagName('div')[0]->firstChild->data;
@@ -270,13 +317,13 @@ class DefaultController extends AbstractController
 
                                 $val = (intval(str_replace(["€", "M"], "", $val)) * $indice) * 12;
 
-                                $playerData->setSalary($val);
-
+                                if ($isNewPlayerInformation) {
+                                    $playerData->setSalary($val);
+                                }
                                 break;
                         }
 
                         if ($i > 9 && $i < 44) {
-                            $playerAttr = new PlayerAttribut();
 
                             $attr = strtoupper($col->attributes[1]->value);
 
@@ -344,19 +391,38 @@ class DefaultController extends AbstractController
 
                             $value = $col->getElementsByTagName('span')[0]->firstChild->data;
 
-                            $playerAttr->setAttributs($attribut);
-                            $playerAttr->setScore(intval($value));
-                            $playerAttr->setPlayerInformation($playerData);
+                            $playerAttr = $em->getRepository(PlayerAttribut::class)->findOneBy([
+                                "score" => intval($value),
+                                "attributs" => $attribut,
+                                "playerInformation" => $playerData,
+                            ]);
 
-                            $playerData->addAttribut($playerAttr);
-                            $em->persist($playerAttr);
+                            if (is_null($playerAttr)) {
+                                $playerAttr = new PlayerAttribut();
+                                $playerAttr->setAttributs($attribut);
+                                $playerAttr->setScore(intval($value));
+                                $playerAttr->setPlayerInformation($playerData);
+                                $playerData->addAttribut($playerAttr);
+                                $em->persist($playerAttr);
+                            }
+
                         }
                     }
 
+
+                    if($isNewPlayerInformation) {
+                        $em->persist($playerData);
+                    }
+
                     $em->persist($player);
-                    $em->persist($playerData);
                     $em->flush();
+
+                    if($key % 100){
+                        flush();
+                        ob_clean();
+                    }
                 };
+
                 $btn = $crawler->selectLink('Next');
 
                 if ($btn->count()) {
@@ -378,6 +444,7 @@ class DefaultController extends AbstractController
      */
     public function index()
     {
+        phpinfo();
         return $this->render("view.html.twig");
     }
 
