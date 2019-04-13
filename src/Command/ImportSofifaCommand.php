@@ -63,7 +63,7 @@ class ImportSofifaCommand extends ContainerAwareCommand
 
         $client = new \Goutte\Client();
 
-        $em = $this->getContainer()->get("doctrine");
+        $em = $this->getContainer()->get("doctrine")->getManager();
 
         $boucle = 0;
         $close = false;
