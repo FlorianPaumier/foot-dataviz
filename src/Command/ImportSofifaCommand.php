@@ -16,6 +16,7 @@ use App\Entity\PlayerAttribut;
 use App\Entity\PlayerClub;
 use App\Entity\PlayerInformation;
 use Doctrine\ORM\EntityManagerInterface;
+use Goutte\Client;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -55,13 +56,13 @@ class ImportSofifaCommand extends ContainerAwareCommand
             "https://sofifa.com/players?v=19&e=159422&wil=110&wih=269&crl=0&fil=0&hel=0&shl=0&vol=0&drl=0&drh=99&cul=0&cuh=99&frl=0&frh=99&lol=0&loh=99&bll=0&blh=99&acl=0&ach=99&spl=0&sph=99&agl=0&agh=99&rel=0&reh=99&bal=0&bah=99&sol=0&soh=99&jul=0&juh=99&stl=0&sth=99&srl=0&srh=99&lnl=0&lnh=99&arl=0&arh=99&inl=0&inh=99&pol=0&poh=99&vil=0&vih=99&pel=0&peh=99&cml=0&cmh=99&mal=0&mah=99&sal=0&sah=99&sll=0&slh=99&gdl=0&gdh=99&ghl=0&ghh=99&gkl=0&gkh=99&gpl=0&gph=99&grl=0&grh=99&showCol=bp",
             "https://sofifa.com/players?v=18&e=159214&wil=110&wih=269&crl=0&fil=0&hel=0&shl=0&vol=0&drl=0&drh=99&cul=0&cuh=99&frl=0&frh=99&lol=0&loh=99&bll=0&blh=99&acl=0&ach=99&spl=0&sph=99&agl=0&agh=99&rel=0&reh=99&bal=0&bah=99&sol=0&soh=99&jul=0&juh=99&stl=0&sth=99&srl=0&srh=99&lnl=0&lnh=99&arl=0&arh=99&inl=0&inh=99&pol=0&poh=99&vil=0&vih=99&pel=0&peh=99&cml=0&cmh=99&mal=0&mah=99&sal=0&sah=99&sll=0&slh=99&gdl=0&gdh=99&ghl=0&ghh=99&gkl=0&gkh=99&gpl=0&gph=99&grl=0&grh=99&showCol=bp",
             "https://sofifa.com/players?v=17&e=158857&wil=110&wih=269&crl=0&fil=0&hel=0&shl=0&vol=0&drl=0&drh=99&cul=0&cuh=99&frl=0&frh=99&lol=0&loh=99&bll=0&blh=99&acl=0&ach=99&spl=0&sph=99&agl=0&agh=99&rel=0&reh=99&bal=0&bah=99&sol=0&soh=99&jul=0&juh=99&stl=0&sth=99&srl=0&srh=99&lnl=0&lnh=99&arl=0&arh=99&inl=0&inh=99&pol=0&poh=99&vil=0&vih=99&pel=0&peh=99&cml=0&cmh=99&mal=0&mah=99&sal=0&sah=99&sll=0&slh=99&gdl=0&gdh=99&ghl=0&ghh=99&gkl=0&gkh=99&gpl=0&gph=99&grl=0&grh=99&showCol=bp",
-            "https://sofifa.com/players?v=16&e=158494&wil=110&wih=269&crl=0&fil=0&hel=0&shl=0&vol=0&drl=0&drh=99&cul=0&cuh=99&frl=0&frh=99&lol=0&loh=99&bll=0&blh=99&acl=0&ach=99&spl=0&sph=99&agl=0&agh=99&rel=0&reh=99&bal=0&bah=99&sol=0&soh=99&jul=0&juh=99&stl=0&sth=99&srl=0&srh=99&lnl=0&lnh=99&arl=0&arh=99&inl=0&inh=99&pol=0&poh=99&vil=0&vih=99&pel=0&peh=99&cml=0&cmh=99&mal=0&mah=99&sal=0&sah=99&sll=0&slh=99&gdl=0&gdh=99&ghl=0&ghh=99&gkl=0&gkh=99&gpl=0&gph=99&grl=0&grh=99&showCol=bp",
-            "https://sofifa.com/players?v=15&e=158116&wil=110&wih=269&crl=0&fil=0&hel=0&shl=0&vol=0&drl=0&drh=99&cul=0&cuh=99&frl=0&frh=99&lol=0&loh=99&bll=0&blh=99&acl=0&ach=99&spl=0&sph=99&agl=0&agh=99&rel=0&reh=99&bal=0&bah=99&sol=0&soh=99&jul=0&juh=99&stl=0&sth=99&srl=0&srh=99&lnl=0&lnh=99&arl=0&arh=99&inl=0&inh=99&pol=0&poh=99&vil=0&vih=99&pel=0&peh=99&cml=0&cmh=99&mal=0&mah=99&sal=0&sah=99&sll=0&slh=99&gdl=0&gdh=99&ghl=0&ghh=99&gkl=0&gkh=99&gpl=0&gph=99&grl=0&grh=99&showCol=bp",
-            "https://sofifa.com/players?v=14&e=157760&wil=110&wih=269&crl=0&fil=0&hel=0&shl=0&vol=0&drl=0&drh=99&cul=0&cuh=99&frl=0&frh=99&lol=0&loh=99&bll=0&blh=99&acl=0&ach=99&spl=0&sph=99&agl=0&agh=99&rel=0&reh=99&bal=0&bah=99&sol=0&soh=99&jul=0&juh=99&stl=0&sth=99&srl=0&srh=99&lnl=0&lnh=99&arl=0&arh=99&inl=0&inh=99&pol=0&poh=99&vil=0&vih=99&pel=0&peh=99&cml=0&cmh=99&mal=0&mah=99&sal=0&sah=99&sll=0&slh=99&gdl=0&gdh=99&ghl=0&ghh=99&gkl=0&gkh=99&gpl=0&gph=99&grl=0&grh=99&showCol=bp",
+            "https://sofifa.com/players?wil=110&wih=269&crl=0&crh=99&fil=0&fih=99&hel=0&heh=99&shl=0&shh=99&vol=0&voh=99&drl=0&drh=99&cul=0&cuh=99&frl=0&frh=99&lol=0&loh=99&bll=0&blh=99&acl=0&ach=99&spl=0&sph=99&agl=0&agh=99&rel=0&reh=99&bal=0&bah=99&sol=0&soh=99&jul=0&juh=99&stl=0&sth=99&srl=0&srh=99&lnl=0&lnh=99&arl=0&arh=99&inl=0&inh=99&pol=0&poh=99&vil=0&vih=99&pel=0&peh=99&mal=0&mah=99&sal=0&sah=99&sll=0&slh=99&gdl=0&gdh=99&ghl=0&ghh=99&gkl=0&gkh=99&gpl=0&gph=99&grl=0&grh=99&showCol=bp&v=16&e=158494&set=true",
+            "https://sofifa.com/players?wil=110&wih=269&crl=0&crh=99&fil=0&fih=99&hel=0&heh=99&shl=0&shh=99&vol=0&voh=99&drl=0&drh=99&cul=0&cuh=99&frl=0&frh=99&lol=0&loh=99&bll=0&blh=99&acl=0&ach=99&spl=0&sph=99&agl=0&agh=99&rel=0&reh=99&bal=0&bah=99&sol=0&soh=99&jul=0&juh=99&stl=0&sth=99&srl=0&srh=99&lnl=0&lnh=99&arl=0&arh=99&inl=0&inh=99&pol=0&poh=99&vil=0&vih=99&pel=0&peh=99&mal=0&mah=99&sal=0&sah=99&sll=0&slh=99&gdl=0&gdh=99&ghl=0&ghh=99&gkl=0&gkh=99&gpl=0&gph=99&grl=0&grh=99&showCol=bp&v=15&e=158116&set=true",
+            "https://sofifa.com/players?wil=110&wih=269&crl=0&crh=99&fil=0&fih=99&hel=0&heh=99&shl=0&shh=99&vol=0&voh=99&drl=0&drh=99&cul=0&cuh=99&frl=0&frh=99&lol=0&loh=99&bll=0&blh=99&acl=0&ach=99&spl=0&sph=99&agl=0&agh=99&rel=0&reh=99&bal=0&bah=99&sol=0&soh=99&jul=0&juh=99&stl=0&sth=99&srl=0&srh=99&lnl=0&lnh=99&arl=0&arh=99&inl=0&inh=99&pol=0&poh=99&vil=0&vih=99&pel=0&peh=99&mal=0&mah=99&sal=0&sah=99&sll=0&slh=99&gdl=0&gdh=99&ghl=0&ghh=99&gkl=0&gkh=99&gpl=0&gph=99&grl=0&grh=99&showCol=bp&v=14&e=157760&set=true",
         ];
 
 
-        $client = new \Goutte\Client();
+        $client = new Client();
 
         $em = $this->getContainer()->get("doctrine")->getManager();
 
@@ -435,7 +436,6 @@ class ImportSofifaCommand extends ContainerAwareCommand
 
                     if ($key % 100) {
                         flush();
-                        ob_clean();
                         $em->clear();
                     }
                 };
