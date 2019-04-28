@@ -23,7 +23,7 @@ class ClubRepository extends ServiceEntityRepository
     {
         $qb = $this->createQueryBuilder("c")
             ->where("c.name like :name")
-            ->setParameters("name", "%$name%")
+            ->setParameter("name", "%$name%")
             ->getQuery()->getOneOrNullResult();
 
         return $qb;
