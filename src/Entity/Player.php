@@ -63,6 +63,11 @@ class Player
      */
     private $country;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $gender;
+
     public function __construct()
     {
         $this->playerClubs = new ArrayCollection();
@@ -169,6 +174,18 @@ class Player
     public function setCountry(?Country $country): self
     {
         $this->country = $country;
+
+        return $this;
+    }
+
+    public function getGender(): ?bool
+    {
+        return $this->gender;
+    }
+
+    public function setGender(bool $gender): self
+    {
+        $this->gender = $gender;
 
         return $this;
     }

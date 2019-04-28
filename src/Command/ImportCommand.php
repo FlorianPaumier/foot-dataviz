@@ -89,14 +89,10 @@ class ImportCommand extends ContainerAwareCommand
                                             break;
                                         }
 
-                                        $clubHome = $this->em->getRepository(Club::class)->findOneBy([
-                                            "name" => trim($data[1])
-                                        ]);
+                                        $clubHome = $this->em->getRepository(Club::class)->findOneLike(trim($data[1]));
 
 
-                                        $clubAway = $this->em->getRepository(Club::class)->findOneBy([
-                                            "name" => trim($data[2])
-                                        ]);
+                                        $clubAway = $this->em->getRepository(Club::class)->findOneLike(trim($data[2]));
 
                                         if (is_null($clubHome)) {
                                             $clubHome = (new Club())->setName($data[1]);
@@ -135,6 +131,8 @@ class ImportCommand extends ContainerAwareCommand
                                             break;
                                         }
                                     }
+
+                                    break;
                                 } else {
                                     $head = str_replace("\r", "", explode(",", $row));
                                 }

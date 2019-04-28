@@ -19,6 +19,15 @@ class ClubRepository extends ServiceEntityRepository
         parent::__construct($registry, Club::class);
     }
 
+    public function findOneLike($name)
+    {
+        $qb = $this->createQueryBuilder("c")
+            ->where("c.name like :name")
+            ->setParameters("name", "%$name%")
+            ->getQuery()->getOneOrNullResult();
+
+        return $qb;
+    }
     // /**
     //  * @return Club[] Returns an array of Club objects
     //  */
