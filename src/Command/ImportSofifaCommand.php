@@ -148,7 +148,7 @@ class ImportSofifaCommand extends ContainerAwareCommand
 
                                     $player->setName($playerName);
                                     $player->setCountry($country);
-
+                                    $player->setGender(true);
                                     $isNewPlayerInformation = true;
                                     $playerData->setEffectiveDate($effectivDate);
                                     $playerData->setPlayer($player);
