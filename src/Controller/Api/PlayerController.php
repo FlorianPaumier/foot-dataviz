@@ -46,7 +46,7 @@ class PlayerController extends ApiController
 
     /**
      * @Rest\Get("/{id}")
-     * @Rest\View(serializerGroups={"player","country_light","attribut","player_attribut","information","pagination"}, statusCode=Response::HTTP_OK)
+     * @Rest\View(serializerGroups={"player","club_light","country_light","attribut","player_attribut","information","pagination"}, statusCode=Response::HTTP_OK)
      * @OA\Get(
      *     path="/player/{id}",
      *     tags={"Player"},

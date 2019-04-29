@@ -131,8 +131,6 @@ class ImportCommand extends ContainerAwareCommand
                                             break;
                                         }
                                     }
-
-                                    break;
                                 } else {
                                     $head = str_replace("\r", "", explode(",", $row));
                                 }

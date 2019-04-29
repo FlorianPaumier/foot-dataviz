@@ -3,11 +3,13 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation as JMS;
 use OpenApi\Annotations as OA;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\PlayerClubRepository")
  * @OA\Schema()
+ * @JMS\ExclusionPolicy("all")
  */
 class PlayerClub
 {
@@ -16,12 +18,16 @@ class PlayerClub
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @JMS\Expose()
+     * @JMS\Groups({"club", "club_light", "player_club_id"})
      */
     private $id;
 
     /**
      * @var Club
      * @ORM\ManyToOne(targetEntity="App\Entity\Club", inversedBy="playerClubs")
+     * @JMS\Expose()
+     * @JMS\Groups({"club", "club_light"})
      */
     private $club;
 
@@ -34,12 +40,16 @@ class PlayerClub
     /**
      * @var \DateTime
      * @ORM\Column(type="datetime")
+     * @JMS\Expose()
+     * @JMS\Groups({"club", "club_light"})
      */
     private $staredDate;
 
     /**
      * @var \DateTime
      * @ORM\Column(type="datetime")
+     * @JMS\Expose()
+     * @JMS\Groups({"club", "club_light"})
      */
     private $endedDate;
 
