@@ -151,7 +151,7 @@ class PlayerController extends ApiController
     }
 
     /**
-     * @Rest\Get("/best")
+     * @Rest\Get("/best/gender/{gender}")
      * @Rest\View(serializerGroups={"player_light", "pagination"}, statusCode=Response::HTTP_OK)
      * @Rest\QueryParam(name="sort", default="id", requirements="name|id")
      * @Rest\QueryParam(name="direction", default="asc", requirements="asc|desc")
@@ -168,7 +168,7 @@ class PlayerController extends ApiController
      *     @OA\Response(response="200", description=DESCRIPTION_RESPONSE_200, @OA\JsonContent(type="array", @OA\Items(ref="#/components/schemas/City")))
      * )
      */
-    public function getBestPlayer(PaginatorInterface $paginator, ParamFetcher $paramFetcher)
+    public function getBestPlayer(PaginatorInterface $paginator, ParamFetcher $paramFetcher, $gender)
     {
         $em = $this->getDoctrine()->getManager();
 
@@ -178,7 +178,8 @@ class PlayerController extends ApiController
             ->leftJoin("i.attributs", "a")
             ->leftJoin("a.attributs", "ia")
             ->andWhere("ia.libelle = OVA")
-            ->andWhere("p.gender = 1")
+            ->andWhere("p.gender = :gender")
+            ->setParameter("gender", $gender)
             ->orderBy("a.score", "DESC")
             ->setMaxResults(100);
 
