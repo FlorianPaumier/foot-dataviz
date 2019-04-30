@@ -73,6 +73,7 @@ class ImportSofifaCommand extends ContainerAwareCommand
         foreach ($baseUrl as $index => $url) {
             $crawler = $client->request("GET", $url);
             do {
+
                 $rows = $crawler->filter("tbody tr");
 
                 foreach ($rows as $key => $row) {
@@ -442,6 +443,8 @@ class ImportSofifaCommand extends ContainerAwareCommand
                 };
 
                 $btn = $crawler->selectLink('Next');
+
+                dump($btn->count());
 
                 if ($btn->count()) {
                     $lnk = $crawler->selectLink('Next')->link();
