@@ -29,7 +29,7 @@ class Player
      * @var string
      * @ORM\Column(type="string", length=255)
      * @JMS\Expose()
-     * @JMS\Groups({"player", "player_light"})
+     * @JMS\Groups({"player", "player_light", "player_score"})
      */
     private $name;
 
@@ -52,7 +52,7 @@ class Player
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\PlayerInformation", mappedBy="player")
      * @JMS\Expose()
-     * @JMS\Groups({"player"})
+     * @JMS\Groups({"player","player_score"})
      */
     private $information;
 

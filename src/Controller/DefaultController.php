@@ -40,7 +40,78 @@ class DefaultController extends AbstractController
      */
     public function index()
     {
-        phpinfo();
+        $baseUrl = [
+            "https://sofifa.com/players?v=19gender=0",
+            "https://sofifa.com/players?v=19gender=0",
+            "https://sofifa.com/players?v=19gender=0",
+            "https://sofifa.com/players?v=19gender=1",
+            "https://sofifa.com/players?v=19gender=1",
+            "https://sofifa.com/players?v=19gender=1",
+        ];
+
+        $label = ["International Reputation","Weak Foot", "Skill Moves", "Work Rate", "Jersey Number"];
+
+        $client = new Client();
+
+        $em = $this->getDoctrine()->getManager();
+
+        $offset = 0;
+        $close = false;
+
+        foreach ($baseUrl as $position => $url) {
+            $crawler = $client->request("GET", $url);
+            do {
+                $rows = $crawler->filter("tbody tr");
+
+                foreach ($rows as $key => $row) {
+
+                    /** @var \DOMElement[] $cols */
+                    $cols = $row->getElementsByTagName("td");
+                    /** @var \DOMElement $node */
+                    $node = $cols[1]->getElementsByTagName('a')[1]->firstChild->data;
+                    $link = $crawler->selectLink($node)->link();
+                    $playerName = $cols[1]->getElementsByTagName('a')[1]->getAttribute("title");
+                    $player = $em->getRepository(Player::class)->findOneBy(["name" => $playerName]);
+
+                    dump($player);
+                    $clientPlayer = new Client();
+                    $crawlerPlayer = $clientPlayer->click($link);
+
+                    $list = $crawlerPlayer->filter("ul.pl li")->getIterator();
+
+                    /** @var \DOMElement[] $node */
+                    foreach ($list as $index => $node){
+                        /** @var \DOMElement[] $line */
+                        $line = $node->childNodes;
+                        $attr = null;
+                        $value = null;
+
+                        for($i = 0; $i < $line->length; $i++){
+                            if($line[$i]->nodeName == "label" && in_array($line[$i]->firstChild->data, $label)){
+                                $attr = $line[$i]->childNodes[0]->data;
+
+                                if(!is_null($line[2]) && $line[2]->nodeName == "span"){
+                                    $value = $line[2]->firstChild->data;
+                                }elseif(!is_null($line[2])){
+                                    $value = $line[2]->data;
+                                }
+
+                                if($attr == "Jersey Number"){
+                                    $value = $line[1]->data;
+                                }
+                            }
+                        }
+                    }
+
+                    die();
+                }
+
+                if($offset > 120){
+                    $close = true;
+                }
+            } while (!$close);
+        };
+
         return $this->render("view.html.twig");
     }
 

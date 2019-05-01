@@ -24,8 +24,8 @@ class PlayerAttribut
     private $id;
 
     /**
-     * @var integer
-     * @ORM\Column(type="integer")
+     * @var string
+     * @ORM\Column(type="string")
      * @JMS\Expose()
      * @JMS\Groups({"player_attribut"})
      */
@@ -50,12 +50,12 @@ class PlayerAttribut
         return $this->id;
     }
 
-    public function getScore(): ?int
+    public function getScore(): ?string
     {
         return $this->score;
     }
 
-    public function setScore(int $score): self
+    public function setScore(string $score): self
     {
         $this->score = $score;
 

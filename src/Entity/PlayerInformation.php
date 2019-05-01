@@ -53,7 +53,7 @@ class PlayerInformation
      * @var Collection|Attribut[]
      * @ORM\OneToMany(targetEntity="App\Entity\PlayerAttribut", mappedBy="playerInformation")
      * @JMS\Expose()
-     * @JMS\Groups({"information", "information_light"})
+     * @JMS\Groups({"information"})
      */
     private $attributs;
 
