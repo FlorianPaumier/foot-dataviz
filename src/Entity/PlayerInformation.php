@@ -85,6 +85,8 @@ class PlayerInformation
 
     /**
      * @ORM\Column(type="integer")
+     * @JMS\Expose()
+     * @JMS\Groups({"information", "information_light"})
      */
     private $OVA;
 
