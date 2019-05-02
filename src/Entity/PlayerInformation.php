@@ -84,7 +84,7 @@ class PlayerInformation
     private $weight;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer", name="ova")
      * @JMS\Expose()
      * @JMS\Groups({"information", "information_light"})
      */
