@@ -83,6 +83,11 @@ class PlayerInformation
      */
     private $weight;
 
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $OVA;
+
     public function __construct()
     {
         $this->attributs = new ArrayCollection();
@@ -204,6 +209,18 @@ class PlayerInformation
     public function setWeight(string $weight): self
     {
         $this->weight = $weight;
+
+        return $this;
+    }
+
+    public function getOVA(): ?int
+    {
+        return $this->OVA;
+    }
+
+    public function setOVA(int $OVA): self
+    {
+        $this->OVA = $OVA;
 
         return $this;
     }
