@@ -53,9 +53,9 @@ class PlayerController extends ApiController
      *     @OA\Response(response="200", description=DESCRIPTION_RESPONSE_200, @OA\JsonContent(type="array", @OA\Items(ref="#/components/schemas/Player")))
      * )
      */
-    public function show(Player $player)
+    public function show($id)
     {
-        return $player;
+        return $this->getDoctrine()->getRepository(Player::class)->find($id);
     }
 
     /**
