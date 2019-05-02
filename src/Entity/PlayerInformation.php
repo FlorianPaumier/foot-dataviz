@@ -88,7 +88,7 @@ class PlayerInformation
      * @JMS\Expose()
      * @JMS\Groups({"information", "information_light"})
      */
-    private $OVA;
+    private $ova;
 
     public function __construct()
     {
@@ -215,14 +215,14 @@ class PlayerInformation
         return $this;
     }
 
-    public function getOVA(): ?int
+    public function getOva(): ?int
     {
-        return $this->OVA;
+        return $this->ova;
     }
 
-    public function setOVA(int $OVA): self
+    public function setOva(int $ova): self
     {
-        $this->OVA = $OVA;
+        $this->ova = $ova;
 
         return $this;
     }
