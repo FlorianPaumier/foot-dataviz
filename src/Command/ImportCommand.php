@@ -43,6 +43,7 @@ class ImportCommand extends ContainerAwareCommand
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+
         $result = true;
 
         $this->em = $this->getContainer()->get('doctrine')->getManager();

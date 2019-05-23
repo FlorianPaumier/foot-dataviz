@@ -24,6 +24,8 @@ class PlayerController extends ApiController
      * @Rest\QueryParam(name="direction", default="asc", requirements="asc|desc")
      * @Rest\QueryParam(name="page", default=1, requirements="\d+")
      * @Rest\QueryParam(name="limit", default=Pagination::DEFAULT_LIMIT, requirements="\d+")
+     * @Rest\QueryParam(name="gender", nullable=true, requirements="\d+")
+     * @Rest\QueryParam(name="country", default=0, requirements="\d+")
      * @OA\Get(
      *     path="/player",
      *     tags={"Player"},
@@ -32,12 +34,34 @@ class PlayerController extends ApiController
      *     @OA\Parameter(in="query", name="direction", description="direction of the sort", @OA\Schema(type="string", enum={"asc","desc"})),
      *     @OA\Parameter(in="query", name="page", description="the page to return", @OA\Schema(type="integer")),
      *     @OA\Parameter(in="query", name="limit", description="the number of result per page", @OA\Schema(type="integer")),
+     *     @OA\Parameter(in="query", name="gender", description="Type of gender", @OA\Schema(type="integer")),
+     *     @OA\Parameter(in="query", name="country", description="id of the country", @OA\Schema(type="integer")),
      *     @OA\Response(response="200", description=DESCRIPTION_RESPONSE_200, @OA\JsonContent(type="array", @OA\Items(ref="#/components/schemas/Player")))
      * )
      */
-    public function index(PlayerRepository $playerRepository, ParamFetcher $paramFetcher, PaginatorInterface $paginator)
+    public function index(ParamFetcher $paramFetcher, PaginatorInterface $paginator)
     {
-        $qb = $playerRepository->createQueryBuilder("p");
+        $em = $this->getDoctrine()->getManager();
+
+        $gender = $paramFetcher->get("gender");
+        $country = $paramFetcher->get("country");
+
+        $qb = $em->getRepository(Player::class)->createQueryBuilder('p')
+            ->leftJoin("p.information", 'i')
+            ->leftJoin("p.country", 'c')
+            ->leftJoin("p.playerClubs", 'pc')
+            ->leftJoin("i.attributs", "a")
+            ->leftJoin("a.attributs", "ia");
+
+        if(!is_null($gender)){
+            $qb->andWhere("p.gender = :gender")
+                ->setParameter("gender", $gender);
+        }
+
+        if($country != 0){
+            $qb->andWhere("c.id = :id")
+                ->setParameter("id" , $country);
+        }
 
         return Pagination::paginate($qb, $paginator, $paramFetcher);
     }
@@ -151,12 +175,13 @@ class PlayerController extends ApiController
     }
 
     /**
-     * @Rest\Get("/best/gender/{gender}")
+     * @Rest\Get("-top")
      * @Rest\View(serializerGroups={"player_light", "pagination"}, statusCode=Response::HTTP_OK)
      * @Rest\QueryParam(name="sort", default="id", requirements="name|id")
      * @Rest\QueryParam(name="direction", default="asc", requirements="asc|desc")
      * @Rest\QueryParam(name="page", default=1, requirements="\d+")
-     * @Rest\QueryParam(name="limit", default=Pagination::DEFAULT_LIMIT, requirements="\d+")
+     * @Rest\QueryParam(name="gender", nullable=true, requirements="\d+")
+     * @Rest\QueryParam(name="contains", nullable=true, requirements="\w+")
      * @OA\Get(
      *     path="/best",
      *     tags={"Player"},
@@ -165,24 +190,38 @@ class PlayerController extends ApiController
      *     @OA\Parameter(in="query", name="direction", description="direction of the sort", @OA\Schema(type="string", enum={"asc","desc"})),
      *     @OA\Parameter(in="query", name="page", description="the page to return", @OA\Schema(type="integer")),
      *     @OA\Parameter(in="query", name="limit", description="the number of result per page", @OA\Schema(type="integer")),
+     *     @OA\Parameter(in="query", name="gender", description="type of gender", @OA\Schema(type="integer")),
+     *     @OA\Parameter(in="query", name="contains", description="string to search in the player name", @OA\Schema(type="string")),
      *     @OA\Response(response="200", description=DESCRIPTION_RESPONSE_200, @OA\JsonContent(type="array", @OA\Items(ref="#/components/schemas/City")))
      * )
      */
-    public function getBestPlayer(PaginatorInterface $paginator, ParamFetcher $paramFetcher, $gender)
+    public function getBestPlayer(PaginatorInterface $paginator, ParamFetcher $paramFetcher)
     {
         $em = $this->getDoctrine()->getManager();
 
+        $gender = $paramFetcher->get("gender");
+        $contains = $paramFetcher->get("contains");
+
         $qb = $em->getRepository(Player::class)->createQueryBuilder('p')
-            ->select("p.name")
+            ->select("p.name", "p.gender")
             ->leftJoin("p.information", 'i')
             ->leftJoin("i.attributs", "a")
             ->leftJoin("a.attributs", "ia")
-            ->andWhere("ia.libelle = OVA")
-            ->andWhere("p.gender = :gender")
-            ->setParameter("gender", $gender)
-            ->orderBy("a.score", "DESC")
+            ->andWhere("i.ova > 50")
+            ->orderBy("i.ova", "DESC")
+            ->groupBy("p.name", "p.gender", "i.ova")
             ->setMaxResults(100);
 
-        return Pagination::paginate($qb, $paginator, $paramFetcher);
+        if(!is_null($gender)){
+            $qb->andWhere("p.gender = :gender")
+                ->setParameter("gender", $gender);
+        }
+
+        if(!is_null($contains)){
+            $qb->andWhere("p.name LIKE :contains")
+                ->setParameter("contains", $gender . "%");
+        }
+
+        return $qb->getQuery()->getResult();
     }
 }
